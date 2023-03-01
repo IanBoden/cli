@@ -43,6 +43,24 @@ spec:
       runAfter:
         - install
 
+    # Run any preparation needed prior to upgrade such as seeding data
+    - name: pre-upgrade
+      params:
+        - name: pipeline_name
+          value: prep-upgrade
+        - name: pipelinerun_name_suffix
+          value: before
+        - name: devops_test_type
+          value: upgrade
+        - name: devops_test_phase
+          value: preupgrade
+        {{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/pre-upgrade.yml.j2') | indent(8) }}
+      taskRef:
+        kind: Task
+        name: mas-fvt-run-pipeline
+      runAfter:
+        - test-before
+
     # Upgrade
     - name: upgrade
       params:
@@ -57,7 +75,25 @@ spec:
         kind: Task
         name: mas-fvt-upgrade-run-pipeline
       runAfter:
-        - test-before
+        - prep-upgrade
+
+    # Confirm upgrade was successful
+    - name: post-upgrade
+      params:
+        - name: pipeline_name
+          value: post-upgrade
+        - name: pipelinerun_name_suffix
+          value: after
+        - name: devops_test_type
+          value: upgrade
+        - name: devops_test_phase
+          value: postupgrade
+        {{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/post-upgrade.yml.j2') | indent(8) }}
+      taskRef:
+        kind: Task
+        name: mas-fvt-run-pipeline
+      runAfter:
+        - upgrade
 
     # FVT
     - name: test-after
@@ -75,4 +111,4 @@ spec:
         kind: Task
         name: mas-fvt-run-pipeline
       runAfter:
-        - upgrade
+        - confirm-upgrade
