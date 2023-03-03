@@ -47,14 +47,14 @@ spec:
     - name: pre-upgrade
       params:
         - name: pipeline_name
-          value: prep-upgrade
+          value: preupgrade
         - name: pipelinerun_name_suffix
           value: before
         - name: devops_test_type
           value: upgrade
         - name: devops_test_phase
           value: preupgrade
-        {{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/pre-upgrade.yml.j2') | indent(8) }}
+        {{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/preupgrade.yml.j2') | indent(8) }}
       taskRef:
         kind: Task
         name: mas-fvt-run-pipeline
@@ -75,20 +75,20 @@ spec:
         kind: Task
         name: mas-fvt-upgrade-run-pipeline
       runAfter:
-        - prep-upgrade
+        - pre-upgrade
 
     # Confirm upgrade was successful
     - name: post-upgrade
       params:
         - name: pipeline_name
-          value: post-upgrade
+          value: postupgrade
         - name: pipelinerun_name_suffix
           value: after
         - name: devops_test_type
           value: upgrade
         - name: devops_test_phase
           value: postupgrade
-        {{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/post-upgrade.yml.j2') | indent(8) }}
+        {{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/postupgrade.yml.j2') | indent(8) }}
       taskRef:
         kind: Task
         name: mas-fvt-run-pipeline
@@ -111,4 +111,4 @@ spec:
         kind: Task
         name: mas-fvt-run-pipeline
       runAfter:
-        - confirm-upgrade
+        - post-upgrade

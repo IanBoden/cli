@@ -48,6 +48,8 @@
         - install-db2
         - install
         - upgrade
+        - preupgrade
+        - postupgrade
 
     - name: "Load intermediate files to variables"
       ansible.builtin.include_vars:
@@ -60,6 +62,8 @@
         - install-db2
         - install
         - upgrade
+        - preupgrade
+        - postupgrade
 
     # 3. Combine common + install + fvt + upgrade lists for upgrade-with-fvt
     # -------------------------------------------------------------------------

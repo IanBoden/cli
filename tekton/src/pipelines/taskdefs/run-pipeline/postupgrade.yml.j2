@@ -1,0 +1,23 @@
+{% for common_param in common_params_definition.params %}
+{% if common_param.name not in param_manual_setting_list %}
+{% if common_param.name in params_source_target_list %}
+- name: {{ common_param.name }}
+  value: $(params.target_{{ common_param.name }})
+{% else %}
+- name: {{ common_param.name }}
+  value: $(params.{{ common_param.name }})
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% for post_upgrade_param in postupgrade_params_definition.params %}
+{% if post_upgrade_param.name not in param_manual_setting_list %}
+{% if post_upgrade_param.name in params_source_target_list %}
+- name: {{ post_upgrade_param.name }}
+  value: $(params.target_{{ post_upgrade_param.name }})
+{% else %}
+- name: {{ post_upgrade_param.name }}
+  value: $(params.{{ post_upgrade_param.name }})
+{% endif %}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,10 @@
+# Core FVT 1.1 coreapi-addons ~20m
+- name: fvt-coreapi-addons
+  {{ lookup('template', 'taskdefs/upgrade/common/taskref.yml.j2') | indent(2) }}
+  params:
+    {{ lookup('template', 'taskdefs/upgrade/common/params.yml.j2') | indent(4) }}
+    - name: test_suite
+      value: coreapi-addons
+  runAfter:
+    - suite-verify
+
