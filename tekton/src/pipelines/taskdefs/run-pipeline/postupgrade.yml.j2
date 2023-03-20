@@ -10,14 +10,26 @@
 {% endif %}
 {% endfor %}
 
-{% for post_upgrade_param in postupgrade_params_definition.params %}
-{% if post_upgrade_param.name not in param_manual_setting_list %}
-{% if post_upgrade_param.name in params_source_target_list %}
-- name: {{ post_upgrade_param.name }}
-  value: $(params.target_{{ post_upgrade_param.name }})
+{% for install_param in install_params_definition.params %}
+{% if install_param.name not in param_manual_setting_list %}
+{% if install_param.name in params_source_target_list %}
+- name: {{ install_param.name }}
+  value: $(params.source_{{ install_param.name }})
 {% else %}
-- name: {{ post_upgrade_param.name }}
-  value: $(params.{{ post_upgrade_param.name }})
+- name: {{ install_param.name }}
+  value: $(params.{{ install_param.name }})
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% for fvt_param in fvt_params_definition.params %}
+{% if fvt_param.name not in param_manual_setting_list %}
+{% if fvt_param.name in params_source_target_list %}
+- name: {{ fvt_param.name }}
+  value: $(params.target_{{ fvt_param.name }})
+{% else %}
+- name: {{ fvt_param.name }}
+  value: $(params.{{ fvt_param.name }})
 {% endif %}
 {% endif %}
 {% endfor %}

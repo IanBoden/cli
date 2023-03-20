@@ -120,6 +120,19 @@
       with_items:
         - upgrade-with-fvt
 
+    # 4. Generate PipelineRun
+    # -------------------------------------------------------------------------
+    - name: Generate install PipelineRuns
+      ansible.builtin.template:
+        src: "{{ pipelinerun_target_dir }}/{{ item }}.yml.j2"
+        dest: "{{ pipelinerun_target_dir }}/{{ item }}.yaml"
+      vars:
+        - devops_build_number: "0000"
+        - pipelinerun_timeout: "2h"
+        - pipelinerun_name_suffix: ""
+      with_items:
+        - upgrade-with-fvt
+
     # 9. Generate Upgrade Test Tasks
     # -------------------------------------------------------------------------
     # These tasks require the *_params_definition variables generated in step 1.1 - 1.4
