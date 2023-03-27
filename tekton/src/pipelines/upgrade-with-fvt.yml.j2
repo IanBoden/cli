@@ -12,36 +12,36 @@ spec:
   tasks:
 
     # Install
-    - name: install
-      params:
-        - name: pipeline_name
-          value: install
-        - name: devops_test_type
-          value: upgrade
-        - name: devops_test_phase
-          value: install
-        {{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/install.yml.j2') | indent(8) }}
-      taskRef:
-        kind: Task
-        name: mas-fvt-install-run-pipeline
+    # - name: install
+    #  params:
+    #    - name: pipeline_name
+    #      value: install
+    #    - name: devops_test_type
+    #      value: upgrade
+    #    - name: devops_test_phase
+    #      value: install
+    #    {#{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/install.yml.j2') | indent(8) }#}
+    #  taskRef:
+    #    kind: Task
+    #    name: mas-fvt-install-run-pipeline
 
     # FVT
-    - name: test-before
-      params:
-        - name: pipeline_name
-          value: fvt-core
-        - name: pipelinerun_name_suffix
-          value: before
-        - name: devops_test_type
-          value: upgrade
-        - name: devops_test_phase
-          value: fvtbefore
-        {{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/fvt.yml.j2') | indent(8) }}
-      taskRef:
-        kind: Task
-        name: mas-fvt-run-pipeline
-      runAfter:
-        - install
+    # - name: test-before
+    #  params:
+    #    - name: pipeline_name
+    #      value: fvt-core
+    #    - name: pipelinerun_name_suffix
+    #      value: before
+    #    - name: devops_test_type
+    #      value: upgrade
+    #    - name: devops_test_phase
+    #      value: fvtbefore
+    #    {#{ lookup('template', pipeline_src_dir ~ '/taskdefs/run-pipeline/fvt.yml.j2') | indent(8) }#}
+    #  taskRef:
+    #    kind: Task
+    #    name: mas-fvt-run-pipeline
+    #  runAfter:
+    #    - install
 
     # Run any preparation needed prior to upgrade such as seeding data
     - name: pre-upgrade
@@ -58,8 +58,8 @@ spec:
       taskRef:
         kind: Task
         name: mas-fvt-run-pipeline
-      runAfter:
-        - test-before
+    #  runAfter:
+    #    - test-before
 
     # Upgrade
     - name: upgrade

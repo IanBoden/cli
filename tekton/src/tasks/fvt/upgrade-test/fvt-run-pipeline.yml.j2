@@ -50,6 +50,11 @@ spec:
         value: $(params.{{ fvt_param.name }})
 {% endfor %}
 
+{% for runpipeline_param in runpipeline_params_definition.params %}
+      - name: {{ runpipeline_param.name | upper }}
+        value: $(params.{{ runpipeline_param.name }})
+{% endfor %}
+
   steps:
     # It uses pipeline_name to know what pipeline to run
     - name: run-pipeline

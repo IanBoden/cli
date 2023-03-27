@@ -1,10 +1,45 @@
-# Core FVT 1.1 coreapi-addons ~20m
-- name: fvt-coreapi-addons
-  {{ lookup('template', 'taskdefs/upgrade/common/taskref.yml.j2') | indent(2) }}
-  params:
-    {{ lookup('template', 'taskdefs/upgrade/common/params.yml.j2') | indent(4) }}
-    - name: test_suite
-      value: coreapi-addons
-  runAfter:
-    - suite-verify
 
+- name: fvt-preupgrade
+  params:
+    - name: mas_instance_id
+      value: $(params.mas_instance_id)
+    - name: mas_workspace_id
+      value: $(params.mas_workspace_id)
+
+    - name: devops_mongo_uri
+      value: $(params.devops_mongo_uri)
+    - name: devops_build_number
+      value: $(params.devops_build_number)
+
+    - name: fvt_image_registry
+      value: $(params.fvt_image_registry)
+    - name: fvt_image_namespace
+      value: mas-devops
+    - name: fvt_image_name
+      value: fvt-iot-preupgrade
+    - name: fvt_image_version
+      value: 1.1.8-pre.ib.upgrade
+    - name: product_channel
+      value: $(params.mas_app_channel_iot)
+    - name: product_id
+      value: ibm-mas-iot
+    - name: fvt_test_suite
+      value: iot
+
+    - name: devops_test_type
+      value: $(params.devops_test_type)
+    - name: devops_test_phase
+      value: $(params.devops_test_phase)
+  taskRef:
+    kind: Task
+    name: mas-fvt-run-suite
+  when:
+    - input: "$(params.fvt_version_iot)"
+      operator: notin
+      values: ["skip"]
+    - input: "$(params.mas_app_channel_iot)"
+      operator: notin
+      values: [""]
+  workspaces:
+    - name: configs
+      workspace: shared-configs
